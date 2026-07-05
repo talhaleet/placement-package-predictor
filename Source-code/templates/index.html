@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placement Package Predictor</title>
+
+    
+</head>
+
+<style>
+    *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+
+    background:linear-gradient(135deg,#4facfe,#00f2fe);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    height:100vh;
+}
+
+.container{
+
+    width:420px;
+
+    background:white;
+
+    padding:40px;
+
+    border-radius:20px;
+
+    text-align:center;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.2);
+
+}
+
+h1{
+
+    color:#333;
+
+    margin-bottom:15px;
+
+}
+
+.subtitle{
+
+    color:#777;
+
+    margin-bottom:30px;
+
+    line-height:1.5;
+
+}
+
+input{
+
+    width:100%;
+
+    padding:14px;
+
+    font-size:18px;
+
+    border:2px solid #ddd;
+
+    border-radius:10px;
+
+    outline:none;
+
+    margin-bottom:20px;
+
+    transition:.3s;
+
+}
+
+input:focus{
+
+    border-color:#4facfe;
+
+}
+
+button{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#4facfe;
+
+    color:white;
+
+    font-size:18px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+button:hover{
+
+    background:#2d8fff;
+
+    transform:translateY(-2px);
+
+}
+
+#result{
+
+    margin-top:25px;
+
+    padding:15px;
+
+    border-radius:10px;
+
+    background:#f4f8ff;
+
+    color:#1d3557;
+
+    font-size:20px;
+
+    font-weight:bold;
+
+    display:block;
+
+}
+</style>
+
+<body>
+
+    <div class="container">
+
+        <h1>🎓 Placement Package Predictor</h1>
+
+        <p class="subtitle">
+            Enter your CGPA to predict your expected placement package.
+        </p>
+
+        <input
+            type="number"
+            id="cgpa"
+            step="0.01"
+            placeholder="Enter your CGPA">
+
+        <button onclick="predict()">
+            Predict Package
+        </button>
+
+        <div id="result"></div>
+
+    </div>
+
+<script>
+
+function predict(){
+
+    let cgpa = document.getElementById("cgpa").value;
+
+    if(cgpa==""){
+        alert("Please enter your CGPA");
+        return;
+    }
+
+    fetch("/predict",{
+
+        method:"POST",
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+            cgpa:cgpa
+        })
+
+    })
+
+    .then(response=>response.json())
+
+    .then(data=>{
+
+        document.getElementById("result").innerHTML =
+        "Predicted Package: <strong>" +
+        data.prediction +
+        " </strong>";
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>
